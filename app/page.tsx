@@ -93,8 +93,24 @@ export default function Home() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-6 h-6" />
           </div>
 
+          {/* Quick Tags */}
+          {!query && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="text-sm text-slate-500 ml-2">شائع:</span>
+              {['أنتينال', 'بنادول', 'كاتافلام', 'أوجمنتين'].map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleSearch({ target: { value: tag } } as any)}
+                  className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm px-3 py-1 rounded-full transition-colors font-medium"
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Search Results Dropdown */}
-          {searchResults.length > 0 && (
+          {query.length > 1 && searchResults.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-40 max-h-80 overflow-y-auto">
               {searchResults.map((med) => (
                 <button
@@ -111,8 +127,24 @@ export default function Home() {
               ))}
             </div>
           )}
-        </div>
 
+          {/* Empty Search Results */}
+          {query.length > 1 && searchResults.length === 0 && !loading && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-amber-100 p-6 z-40 text-center animate-in fade-in">
+              <AlertTriangle className="w-12 h-12 text-amber-400 mx-auto mb-3" />
+              <p className="text-slate-800 font-bold mb-2">هذا الدواء غير مسجل في نسختنا التجريبية بعد</p>
+              <button 
+                onClick={() => {
+                  setQuery('');
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }}
+                className="text-emerald-600 hover:text-emerald-700 font-medium underline text-sm"
+              >
+                اضغط هنا لطلب إضافته أو البحث عن بديله
+              </button>
+            </div>
+          )}
+        </div>
         {/* Selected Medicine & Alternatives */}
         {selectedMedicine && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
