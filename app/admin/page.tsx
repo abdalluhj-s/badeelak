@@ -257,11 +257,13 @@ function PharmaciesTab({ pharmacies, reload }: { pharmacies: any[], reload: () =
         <h2 className="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 flex items-center gap-2">
           <Plus className="w-5 h-5 text-emerald-500" /> إضافة صيدلية متعاقدة
         </h2>
-        <form onSubmit={handleAddSubmit} className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <form onSubmit={handleAddSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <input required name="name" placeholder="اسم الصيدلية" className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" />
           <input required name="address" placeholder="العنوان (المنطقة)" className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" />
           <input name="phone" placeholder="رقم التواصل" className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" />
-          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl transition-colors">حفظ الصيدلية</button>
+          <input name="commission_rate" type="number" step="0.1" placeholder="العمولة (%)" className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" />
+          <input name="profit_margin" type="number" step="0.1" placeholder="هامش الربح (%)" className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" />
+          <button type="submit" className="lg:col-span-5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl transition-colors">حفظ الصيدلية</button>
         </form>
       </div>
 
@@ -271,11 +273,23 @@ function PharmaciesTab({ pharmacies, reload }: { pharmacies: any[], reload: () =
             <div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 mb-1">{pharmacy.name}</h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{pharmacy.address}</p>
-              {pharmacy.phone && (
-                <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 w-fit px-2 py-1 rounded">
-                  {pharmacy.phone}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2 mb-2">
+                {pharmacy.phone && (
+                  <div className="text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 w-fit px-2 py-1 rounded">
+                    {pharmacy.phone}
+                  </div>
+                )}
+                {pharmacy.commission_rate > 0 && (
+                  <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 w-fit px-2 py-1 rounded">
+                    العمولة: {pharmacy.commission_rate}%
+                  </div>
+                )}
+                {pharmacy.profit_margin > 0 && (
+                  <div className="text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 w-fit px-2 py-1 rounded">
+                    هامش الربح: {pharmacy.profit_margin}%
+                  </div>
+                )}
+              </div>
             </div>
             <button 
               onClick={() => handleDelete(pharmacy.id)}

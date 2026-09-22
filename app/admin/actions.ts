@@ -72,8 +72,10 @@ export async function addPharmacy(formData: FormData) {
   const name = formData.get('name') as string;
   const address = formData.get('address') as string;
   const phone = formData.get('phone') as string;
+  const commission_rate = parseFloat(formData.get('commission_rate') as string) || 0;
+  const profit_margin = parseFloat(formData.get('profit_margin') as string) || 0;
 
-  const { error } = await supabase.from('pharmacies').insert([{ name, address, phone }]);
+  const { error } = await supabase.from('pharmacies').insert([{ name, address, phone, commission_rate, profit_margin }]);
   if (error) return { success: false, error: error.message };
   return { success: true };
 }

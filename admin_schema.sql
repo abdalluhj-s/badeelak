@@ -5,6 +5,8 @@ CREATE TABLE pharmacies (
   name text not null,
   address text not null,
   phone text,
+  commission_rate numeric default 0,
+  profit_margin numeric default 0,
   created_at timestamp default now()
 );
 
