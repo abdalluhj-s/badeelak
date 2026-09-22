@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Tajawal } from 'next/font/google';
+import { ThemeProvider } from './components/ThemeProvider';
 
 const tajawal = Tajawal({
   subsets: ['arabic'],
@@ -19,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl" className={tajawal.variable}>
-      <body className="font-tajawal bg-slate-50 text-slate-900 antialiased min-h-screen">
-        {children}
+    <html lang="ar" dir="rtl" className={tajawal.variable} suppressHydrationWarning>
+      <body className="font-tajawal bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased min-h-screen transition-colors">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
