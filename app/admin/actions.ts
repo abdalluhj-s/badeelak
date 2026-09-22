@@ -8,7 +8,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 export async function loginAdmin(password: string) {
   if (password === ADMIN_PASSWORD) {
     const cookieStore = await cookies();
-    cookieStore.set('admin_auth', 'true', { secure: true, httpOnly: true, maxAge: 60 * 60 * 24 });
+    cookieStore.set('admin_auth', 'true', { 
+      secure: process.env.NODE_ENV === 'production', 
+      httpOnly: true, 
+      maxAge: 60 * 60 * 24 
+    });
     return { success: true };
   }
   return { success: false, error: 'كلمة المرور غير صحيحة' };
@@ -20,8 +24,13 @@ export async function logoutAdmin() {
 }
 
 export async function checkAdminAuth() {
-  const cookieStore = await cookies();
-  return cookieStore.get('admin_auth')?.value === 'true';
+  try {
+    const cookieStore = await cookies();
+    return cookieStore.get('admin_auth')?.value === 'true';
+  } catch (error) {
+    console.error('Error in checkAdminAuth:', error);
+    return false;
+  }
 }
 
 // Medicines Admin Actions

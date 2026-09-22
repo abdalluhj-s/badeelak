@@ -41,6 +41,9 @@ export default function AdminPage() {
     checkAdminAuth().then(auth => {
       setIsAuthenticated(auth);
       if (auth) loadData();
+    }).catch(err => {
+      console.error(err);
+      setIsAuthenticated(false);
     });
   }, [activeTab]);
 
