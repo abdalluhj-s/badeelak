@@ -3,6 +3,11 @@
 import { supabase } from '@/lib/supabase';
 
 export async function searchMedicines(query: string) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('Missing Supabase Environment Variables');
+    return [];
+  }
+
   if (!query || query.length < 2) return [];
 
   const { data, error } = await supabase
@@ -65,13 +70,24 @@ export async function submitShortageRequest(formData: FormData) {
     return { success: false, error: 'الرجاء إدخال اسم الدواء ورقم الهاتف' };
   }
 
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    return { success: false, error: 'تأكد من ربط المشروع بقاعدة البيانات (Environment Variables) في Vercel.' };
+  }
+
   const { error } = await supabase
     .from('shortage_requests')
     .insert([{ medicine_name, phone_number, city }]);
 
   if (error) {
     console.error('Error inserting shortage request:', error);
-    return { success: false, error: 'حدث خطأ أثناء إرسال الطلب' };
+    // Return specific messages based on Postgres errors (like RLS)
+    if (error.code === '42P01') {
+      return { success: false, error: 'جدول shortage_requests غير موجود، يرجى تشغيل أوامر SQL.' };
+    }
+    if (error.code === '42501') {
+      return { success: false, error: 'غير مصرح بالإضافة (تحقق من إعدادات الـ RLS في Supabase).' };
+    }
+    return { success: false, error: 'حدث خطأ أثناء إرسال الطلب: ' + error.message };
   }
 
   return { success: true };

@@ -83,10 +83,25 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <div className="container mx-auto px-4 py-12 max-w-3xl">
+        {/* Hero Section */}
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-emerald-500 rounded-full blur opacity-30"></div>
+              <div className="relative bg-white dark:bg-slate-800 p-6 rounded-full border border-emerald-100 dark:border-emerald-900/50 shadow-sm">
+                <Pill className="w-16 h-16 text-emerald-500" />
+              </div>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">ابحث عن بديل دوائك بسهولة</h2>
+          <p className="text-slate-600 dark:text-slate-400 text-lg max-w-xl mx-auto">
+            منصة بديلك تساعدك في العثور على البدائل الطبية المتطابقة كيميائياً لأدويتك بأفضل الأسعار المتاحة في السوق المصري.
+          </p>
+        </div>
+
         {/* Search Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8 relative transition-colors">
-          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">ابحث عن دواء</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 p-6 sm:p-8 mb-8 relative transition-colors">
           <div className="relative">
             <input
               type="text"
